@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>colors/BreezeClassic.colors</file>
+        <file>colors/BreezeDark.colors</file>
+        <file>colors/BreezeLight.colors</file>
+    </qresource>
+</RCC>
