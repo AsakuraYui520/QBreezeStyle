@@ -1,2 +1,2 @@
 # QBreezeStyle
-Qt Breeze style plugin
+A modern style plugin for qt applications. Modify from KDE Plasma Breeze visual style
