@@ -26,7 +26,7 @@
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-    app.setProperty("KDE_COLOR_SCHEME_PATH",":/colors/BreezeLight.colors");
+    app.setProperty("KDE_COLOR_SCHEME_PATH","D:/BreezeLight.colors");
     QApplication::setStyle(QStyleFactory::create("breeze"));
     QApplication::setFont(QFont("Microsoft YaHei", 12));
 

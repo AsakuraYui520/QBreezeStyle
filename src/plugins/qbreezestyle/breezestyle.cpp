@@ -270,6 +270,13 @@ Style::Style()
     connect(qApp, &QApplication::paletteChanged, this, &Style::configurationChanged);
 #endif
 
+    auto colorSchemePath = qApp->property("KDE_COLOR_SCHEME_PATH").toString();
+    if(colorSchemePath.isEmpty())
+    {
+        colorSchemePath = ":/colors/BreezeLight.colors";
+        qApp->setProperty("KDE_COLOR_SCHEME_PATH",colorSchemePath);
+    }
+
     // call the slot directly; this initial call will set up things that also
     // need to be reset when the system palette changes
     loadConfiguration();
@@ -432,15 +439,18 @@ void Style::polish(QWidget *widget)
 void Style::polish(QApplication *application)
 {
     _toolsAreaManager->registerApplication(application);
+}
 
+void Style::polish(QPalette &palette)
+{
+    palette = standardPalette();
+}
+
+QPalette Style::standardPalette() const
+{
     auto colorSchemePath = qApp->property("KDE_COLOR_SCHEME_PATH").toString();
-    if(colorSchemePath.isEmpty())
-    {
-        colorSchemePath = ":/colors/BreezeLight.colors";
-        qApp->setProperty("KDE_COLOR_SCHEME_PATH",colorSchemePath);
-    }
     KSharedConfigPtr config = KSharedConfig::openConfig(colorSchemePath);
-    qApp->setPalette(KColorScheme::createApplicationPalette(config));
+    return KColorScheme::createApplicationPalette(config);
 }
 
 //______________________________________________________________

@@ -86,6 +86,11 @@ public:
     //* application polishing
     void polish(QApplication *) override;
 
+    //* palette polishing
+    void polish(QPalette &palette) override;
+
+    QPalette standardPalette() const override;
+
     //* polish scrollarea
     void polishScrollArea(QAbstractScrollArea *);
 
