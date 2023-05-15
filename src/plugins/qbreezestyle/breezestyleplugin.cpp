@@ -9,21 +9,21 @@
 
 #include <QApplication>
 
-namespace Breeze
-{
+//namespace Breeze
+//{
 //_________________________________________________
-QStyle *StylePlugin::create(const QString &key)
+QStyle *QBreezeStylePlugin::create(const QString &key)
 {
     if (key.compare(QLatin1String("breeze"), Qt::CaseInsensitive) == 0) {
-        return new Style;
+        return new Breeze::Style;
     }
     return nullptr;
 }
 
 //_________________________________________________
-QStringList StylePlugin::keys() const
+QStringList QBreezeStylePlugin::keys() const
 {
     return QStringList(QStringLiteral("Breeze"));
 }
 
-}
+//}

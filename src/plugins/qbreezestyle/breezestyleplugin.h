@@ -9,9 +9,9 @@
 
 #include <QStylePlugin>
 
-namespace Breeze
-{
-class StylePlugin : public QStylePlugin
+//namespace Breeze
+//{
+class QBreezeStylePlugin : public QStylePlugin
 {
     Q_OBJECT
 
@@ -19,7 +19,7 @@ class StylePlugin : public QStylePlugin
 
 public:
     //* constructor
-    explicit StylePlugin(QObject *parent = nullptr)
+    explicit QBreezeStylePlugin(QObject *parent = nullptr)
         : QStylePlugin(parent)
     {
     }
@@ -31,6 +31,6 @@ public:
     QStyle *create(const QString &) override;
 };
 
-}
+//}
 
 #endif
