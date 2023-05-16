@@ -113,6 +113,10 @@ SOURCES += \
 
 QT += widgets-private
 
+qtConfig(dbus):{
+QT += dbus
+}
+
 DEFINES += _USE_MATH_DEFINES QT_BUILD_BREEZE_LIB
 
 DISTFILES += breeze.json

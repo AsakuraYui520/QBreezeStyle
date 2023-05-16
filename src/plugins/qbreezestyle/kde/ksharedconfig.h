@@ -151,25 +151,27 @@ public:
     }
 
     template<typename T>
-    T readEntry(const QString & name, const T defaultValue = T()) const
+    T readEntry(const QString & name, const T defaultValue) const
     {
-        return entryMap.value(name, defaultValue).value<T>();
+        return entryMap.value(name, defaultValue).template value<T>();
     }
 
-    template<>
-    QColor readEntry(const QString & name, const QColor defaultValue) const
-    {
-        QStringList strRGB =  entryMap.value(name, defaultValue).toStringList();
-        if(strRGB.size() == 3)
-            return QColor(strRGB[0].toInt(),strRGB[1].toInt(),strRGB[2].toInt());
-        else if(strRGB.size() == 4)
-            return QColor(strRGB[0].toInt(),strRGB[1].toInt(),strRGB[2].toInt(),strRGB[3].toInt());
-        else
-            return defaultValue;
-    }
+
 private:
     QMap<QString,QVariant> entryMap;
 };
+
+template<>
+inline QColor KConfigGroup::readEntry(const QString & name, const QColor defaultValue) const
+{
+    QStringList strRGB =  entryMap.value(name, defaultValue).toStringList();
+    if(strRGB.size() == 3)
+        return QColor(strRGB[0].toInt(),strRGB[1].toInt(),strRGB[2].toInt());
+    else if(strRGB.size() == 4)
+        return QColor(strRGB[0].toInt(),strRGB[1].toInt(),strRGB[2].toInt(),strRGB[3].toInt());
+    else
+        return defaultValue;
+}
 
 
 

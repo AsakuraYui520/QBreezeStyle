@@ -1025,7 +1025,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
      <item>
       <widget class="QTabWidget" name="tabWidget">
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="tab">
         <attribute name="title">
@@ -1036,85 +1036,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <attribute name="title">
          <string>Page 2</string>
         </attribute>
-        <widget class="QTableWidget" name="tableWidget">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>20</y>
-           <width>501</width>
-           <height>261</height>
-          </rect>
-         </property>
-         <property name="editTriggers">
-          <set>QAbstractItemView::NoEditTriggers</set>
-         </property>
-         <property name="selectionMode">
-          <enum>QAbstractItemView::SingleSelection</enum>
-         </property>
-         <property name="selectionBehavior">
-          <enum>QAbstractItemView::SelectRows</enum>
-         </property>
-         <row>
-          <property name="text">
-           <string>新建行</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>2</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>新建行</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>新建行</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>新建行</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>新建行</string>
-          </property>
-         </row>
-         <column>
-          <property name="text">
-           <string>新建列</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>1</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>2</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>4</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>5</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>6</string>
-          </property>
-         </column>
-        </widget>
        </widget>
        <widget class="QWidget" name="tab_9">
         <attribute name="title">
