@@ -1,4 +1,4 @@
-QT += charts
+QT += gui widgets
 
 SOURCES += \
     main.cpp\
