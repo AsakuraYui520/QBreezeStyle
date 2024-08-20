@@ -4,13 +4,11 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#ifndef breezebaseengine_h
-#define breezebaseengine_h
+#pragma once
 
 #include "breeze.h"
 
 #include <QObject>
-#include <QSet>
 
 namespace Breeze
 {
@@ -36,7 +34,7 @@ public:
     }
 
     //* enability
-    virtual bool enabled() const
+    [[nodiscard]] virtual bool enabled() const
     {
         return _enabled;
     }
@@ -48,22 +46,13 @@ public:
     }
 
     //* duration
-    virtual int duration() const
+    [[nodiscard]] virtual int duration() const
     {
         return _duration;
     }
 
     //* unregister widget
     virtual bool unregisterWidget(QObject *object) = 0;
-
-    //* list of widgets
-    using WidgetList = QSet<QWidget *>;
-
-    //* returns registered widgets
-    virtual WidgetList registeredWidgets() const
-    {
-        return WidgetList();
-    }
 
 private:
     //* engine enability
@@ -74,5 +63,3 @@ private:
 };
 
 }
-
-#endif

@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#ifndef breezepropertynames_h
-#define breezepropertynames_h
+#pragma once
 
 namespace Breeze
 {
@@ -20,9 +19,10 @@ struct PropertyNames {
     static const char highlightNeutral[];
     static const char noSeparator[];
     static const char isTopMenu[];
+    static const char menuSeamlessEdges[];
     static const char bordersSides[];
+    static const char forceFrame[];
+    static const char statusBarSeparator[];
 };
 
 }
-
-#endif

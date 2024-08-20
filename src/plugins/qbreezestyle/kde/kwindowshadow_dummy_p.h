@@ -9,6 +9,9 @@
 
 #include "kwindowshadow_p.h"
 
+namespace Breeze
+{
+
 class KWindowShadowTilePrivateDummy final : public KWindowShadowTilePrivate
 {
 public:
@@ -22,5 +25,7 @@ public:
     bool create() override;
     void destroy() override;
 };
+
+}
 
 #endif // KWINDOWSHADOW_DUMMY_P_H

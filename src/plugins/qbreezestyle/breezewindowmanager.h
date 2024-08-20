@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#ifndef breezewindowmanager_h
-#define breezewindowmanager_h
+#pragma once
 
 #include "breeze.h"
 #include "breezestyleconfigdata.h"
@@ -26,13 +25,15 @@
 
 namespace Breeze
 {
+class AppEventFilter;
+
 class WindowManager : public QObject
 {
     Q_OBJECT
 
 public:
     //* constructor
-    explicit WindowManager(QObject *);
+    explicit WindowManager();
 
     //* initialize
     /** read relevant options from config */
@@ -211,9 +212,9 @@ private:
     private:
         QPair<QString, QString> _exception;
 
-        friend uint qHash(const ExceptionId &value)
+        friend size_t qHash(const ExceptionId &value, size_t seed = 0)
         {
-            return qHash(value._exception);
+            return qHash(value._exception, seed);
         }
 
         friend bool operator==(const ExceptionId &lhs, const ExceptionId &rhs)
@@ -263,15 +264,16 @@ private:
     //* true if drag is locked
     bool _locked = false;
 
-    //* true if the event we are intercepting passed trough a QQuickWidget.
+    //* true if the event we are intercepting passed through a QQuickWidget.
     /**In this case we shouldn't start a drag, because if it was to start, we would have done it in the event filter of a qquickwidget.
      * Event handlers don't accept input events, but they do block QQuickItems to receive the event, so the event may have been
      * managed by an handler and not blocked by the root qml item.
      **/
     bool _eventInQQuickWidget = false;
 
+    // lifetime: parented to this
     //* application event filter
-    QObject *_appEventFilter = nullptr;
+    AppEventFilter *_appEventFilter = nullptr;
 
     //* allow access of all private members to the app event filter
     friend class AppEventFilter;
@@ -294,5 +296,3 @@ T WindowManager::findParent(const QWidget *widget) const
 }
 
 }
-
-#endif

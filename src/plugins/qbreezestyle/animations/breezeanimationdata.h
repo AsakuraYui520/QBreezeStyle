@@ -3,10 +3,16 @@
  *
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
-#ifndef breeze_animationdata_h
-#define breeze_animationdata_h
+
+#pragma once
+
+#include "config-breeze.h"
 
 #include "breezeanimation.h"
+
+#if BREEZE_HAVE_QTQUICK
+#include <QQuickItem>
+#endif
 
 #include <QEvent>
 #include <QObject>
@@ -23,7 +29,7 @@ class AnimationData : public QObject
 
 public:
     //* constructor
-    AnimationData(QObject *parent, QWidget *target)
+    AnimationData(QObject *parent, QObject *target)
         : QObject(parent)
         , _target(target)
     {
@@ -39,7 +45,7 @@ public:
     }
 
     //* enability
-    virtual bool enabled() const
+    [[nodiscard]] virtual bool enabled() const
     {
         return _enabled;
     }
@@ -51,7 +57,7 @@ public:
     }
 
     //* target
-    const WeakPointer<QWidget> &target() const
+    [[nodiscard]] const WeakPointer<QObject> &target() const
     {
         return _target;
     }
@@ -76,14 +82,21 @@ protected:
     //* trigger target update
     virtual void setDirty() const
     {
-        if (_target) {
-            _target.data()->update();
+        if (auto widget = qobject_cast<QWidget *>(_target)) {
+            widget->update();
         }
+#if BREEZE_HAVE_QTQUICK
+        else if (auto item = qobject_cast<QQuickItem *>(_target)) {
+            // Note: Calling polish() instead of update() because that's where
+            // Breeze would repaint its image for texture.
+            item->polish();
+        }
+#endif
     }
 
 private:
     //* guarded target
-    WeakPointer<QWidget> _target;
+    WeakPointer<QObject> _target;
 
     //* enability
     bool _enabled = true;
@@ -93,5 +106,3 @@ private:
 };
 
 }
-
-#endif

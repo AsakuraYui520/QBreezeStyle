@@ -12,6 +12,10 @@
 #include <QLoggingCategory>
 #include <array>
 
+namespace Breeze
+{
+
+
 Q_DECLARE_LOGGING_CATEGORY(LOG_KWINDOWSYSTEM)
 Q_LOGGING_CATEGORY(LOG_KWINDOWSYSTEM,"LOG_KWINDOWSYSTEM")
 
@@ -336,4 +340,7 @@ bool KWindowShadowPrivateDummy::create()
 
 void KWindowShadowPrivateDummy::destroy()
 {
+}
+
+
 }

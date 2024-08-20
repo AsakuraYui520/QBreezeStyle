@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#ifndef breezespinbox_data_h
-#define breezespinbox_data_h
+#pragma once
 
 #include "breezeanimationdata.h"
 
@@ -24,7 +23,7 @@ class SpinBoxData : public AnimationData
 
 public:
     //* constructor
-    SpinBoxData(QObject *, QWidget *, int);
+    SpinBoxData(QObject *parent, QObject *target, int duration);
 
     //* animation state
     bool updateState(QStyle::SubControl subControl, bool value)
@@ -153,5 +152,3 @@ private:
 };
 
 }
-
-#endif

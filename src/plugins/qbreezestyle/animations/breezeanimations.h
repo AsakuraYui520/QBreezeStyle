@@ -3,8 +3,8 @@
  *
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
-#ifndef breezeanimations_h
-#define breezeanimations_h
+
+#pragma once
 
 #include "breezebusyindicatorengine.h"
 #include "breezedialengine.h"
@@ -28,7 +28,7 @@ class Animations : public QObject
 
 public:
     //* constructor
-    explicit Animations(QObject *);
+    explicit Animations();
 
     //* register animations corresponding to given widget, depending on its type.
     void registerWidget(QWidget *widget) const;
@@ -37,73 +37,73 @@ public:
     void unregisterWidget(QWidget *widget) const;
 
     //* enability engine
-    WidgetStateEngine &widgetEnabilityEngine() const
+    [[nodiscard]] WidgetStateEngine &widgetEnabilityEngine() const
     {
         return *_widgetEnabilityEngine;
     }
 
     //* abstractButton engine
-    WidgetStateEngine &widgetStateEngine() const
+    [[nodiscard]] WidgetStateEngine &widgetStateEngine() const
     {
         return *_widgetStateEngine;
     }
 
     //* editable combobox arrow hover engine
-    WidgetStateEngine &comboBoxEngine() const
+    [[nodiscard]] WidgetStateEngine &comboBoxEngine() const
     {
         return *_comboBoxEngine;
     }
 
     //* Tool buttons arrow hover engine
-    WidgetStateEngine &toolButtonEngine() const
+    [[nodiscard]] WidgetStateEngine &toolButtonEngine() const
     {
         return *_toolButtonEngine;
     }
 
     //* item view engine
-    WidgetStateEngine &inputWidgetEngine() const
+    [[nodiscard]] WidgetStateEngine &inputWidgetEngine() const
     {
         return *_inputWidgetEngine;
     }
 
     //* busy indicator
-    BusyIndicatorEngine &busyIndicatorEngine() const
+    [[nodiscard]] BusyIndicatorEngine &busyIndicatorEngine() const
     {
         return *_busyIndicatorEngine;
     }
 
     //* header view engine
-    HeaderViewEngine &headerViewEngine() const
+    [[nodiscard]] HeaderViewEngine &headerViewEngine() const
     {
         return *_headerViewEngine;
     }
 
     //* scrollbar engine
-    ScrollBarEngine &scrollBarEngine() const
+    [[nodiscard]] ScrollBarEngine &scrollBarEngine() const
     {
         return *_scrollBarEngine;
     }
 
     //* dial engine
-    DialEngine &dialEngine() const
+    [[nodiscard]] DialEngine &dialEngine() const
     {
         return *_dialEngine;
     }
 
     //* spinbox engine
-    SpinBoxEngine &spinBoxEngine() const
+    [[nodiscard]] SpinBoxEngine &spinBoxEngine() const
     {
         return *_spinBoxEngine;
     }
 
     //* tabbar
-    TabBarEngine &tabBarEngine() const
+    [[nodiscard]] TabBarEngine &tabBarEngine() const
     {
         return *_tabBarEngine;
     }
 
     //* toolbox
-    ToolBoxEngine &toolBoxEngine() const
+    [[nodiscard]] ToolBoxEngine &toolBoxEngine() const
     {
         return *_toolBoxEngine;
     }
@@ -135,7 +135,7 @@ private:
     //* editable combobox arrow hover effect
     WidgetStateEngine *_comboBoxEngine = nullptr;
 
-    //* mennu toolbutton arrow hover effect
+    //* menu toolbutton arrow hover effect
     WidgetStateEngine *_toolButtonEngine = nullptr;
 
     //* item view engine
@@ -164,5 +164,3 @@ private:
 };
 
 }
-
-#endif

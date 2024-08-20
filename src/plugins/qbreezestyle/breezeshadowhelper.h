@@ -5,9 +5,9 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#ifndef breezeshadowhelper_h
-#define breezeshadowhelper_h
+#pragma once
 
+#include "breezehelper.h"
 #include "breezetileset.h"
 
 #include <KWindowShadow>
@@ -20,8 +20,6 @@
 
 namespace Breeze
 {
-//* forward declaration
-class Helper;
 
 struct ShadowParams {
     ShadowParams() = default;
@@ -78,7 +76,7 @@ class ShadowHelper : public QObject
 
 public:
     //* constructor
-    ShadowHelper(QObject *, Helper &);
+    explicit ShadowHelper(const std::shared_ptr<Helper> &helper);
 
     //* destructor
     ~ShadowHelper() override;
@@ -149,7 +147,7 @@ protected:
 
 private:
     //* helper
-    Helper &_helper;
+    std::shared_ptr<Helper> _helper;
 
     //* registered widgets
     QSet<QWidget *> _widgets;
@@ -168,5 +166,3 @@ private:
 };
 
 }
-
-#endif

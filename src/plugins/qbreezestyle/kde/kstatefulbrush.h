@@ -11,6 +11,10 @@
 
 #include <memory>
 
+namespace Breeze
+{
+
+
 class KStatefulBrushPrivate;
 
 /**
@@ -121,6 +125,8 @@ private:
     std::unique_ptr<KStatefulBrushPrivate> d;
 };
 
-Q_DECLARE_METATYPE(KStatefulBrush) /* so we can pass it in QVariant's */
+}
+
+Q_DECLARE_METATYPE(Breeze::KStatefulBrush) /* so we can pass it in QVariant's */
 
 #endif

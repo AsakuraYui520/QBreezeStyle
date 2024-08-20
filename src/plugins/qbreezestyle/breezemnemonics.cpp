@@ -11,6 +11,11 @@
 
 namespace Breeze
 {
+Mnemonics::Mnemonics()
+    : QObject()
+{
+}
+
 //____________________________________________________
 void Mnemonics::setMode(int mode)
 {

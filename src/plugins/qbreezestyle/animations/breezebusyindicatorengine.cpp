@@ -15,6 +15,7 @@
 #endif
 
 #include <QVariant>
+#include <QWidget>
 
 namespace Breeze
 {
@@ -41,7 +42,7 @@ bool BusyIndicatorEngine::registerWidget(QObject *object)
 
 #if BREEZE_HAVE_QTQUICK
         if (QQuickItem *item = qobject_cast<QQuickItem *>(object)) {
-            connect(item, &QQuickItem::visibleChanged, this, [=]() {
+            connect(item, &QQuickItem::visibleChanged, this, [this, item, object]() {
                 if (!item->isVisible()) {
                     this->setAnimated(object, false);
                 }
@@ -126,11 +127,16 @@ void BusyIndicatorEngine::setValue(int value)
             // update animation flag
             animated = true;
 
+            const void *key = iter.key();
+            QObject *obj = const_cast<QObject *>(static_cast<const QObject *>(key));
 #if BREEZE_HAVE_QTQUICK
-            if (QQuickItem *item = qobject_cast<QQuickItem *>(const_cast<QObject *>(iter.key()))) {
+            if (QQuickItem *item = qobject_cast<QQuickItem *>(obj)) {
                 item->polish();
-            }
+            } else
 #endif
+                if (QWidget *widget = qobject_cast<QWidget *>(obj)) {
+                widget->update();
+            }
         }
     }
 

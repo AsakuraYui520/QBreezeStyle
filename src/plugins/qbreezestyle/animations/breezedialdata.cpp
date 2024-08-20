@@ -12,7 +12,7 @@
 namespace Breeze
 {
 //______________________________________________
-DialData::DialData(QObject *parent, QWidget *target, int duration)
+DialData::DialData(QObject *parent, QObject *target, int duration)
     : WidgetStateData(parent, target, duration)
     , _position(-1, -1)
 {
@@ -57,7 +57,12 @@ void DialData::hoverMoveEvent(QObject *object, QEvent *event)
     QHoverEvent *hoverEvent = static_cast<QHoverEvent *>(event);
 
     // store position
-    _position = hoverEvent->pos();
+    _position =
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        hoverEvent->position().toPoint();
+#else
+        hoverEvent->pos();
+#endif
 
     // trigger animation if position match handle rect
     updateState(_handleRect.contains(_position));

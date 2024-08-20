@@ -10,6 +10,9 @@
 
 #include <array>
 
+namespace Breeze
+{
+
 class KStatefulBrushPrivate
 {
 public:
@@ -98,4 +101,6 @@ QBrush KStatefulBrush::brush(QPalette::ColorGroup state) const
 QBrush KStatefulBrush::brush(const QPalette &pal) const
 {
     return brush(pal.currentColorGroup());
+}
+
 }

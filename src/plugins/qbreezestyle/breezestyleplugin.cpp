@@ -9,8 +9,7 @@
 
 #include <QApplication>
 
-//namespace Breeze
-//{
+
 //_________________________________________________
 QStyle *QBreezeStylePlugin::create(const QString &key)
 {
@@ -25,5 +24,3 @@ QStringList QBreezeStylePlugin::keys() const
 {
     return QStringList(QStringLiteral("Breeze"));
 }
-
-//}

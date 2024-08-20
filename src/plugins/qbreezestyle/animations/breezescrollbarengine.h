@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#ifndef breezescrollbarengine_h
-#define breezescrollbarengine_h
+#pragma once
 
 #include "breezescrollbardata.h"
 #include "breezewidgetstateengine.h"
@@ -30,7 +29,7 @@ public:
     }
 
     //* register scrollbar
-    virtual bool registerWidget(QWidget *, AnimationModes);
+    virtual bool registerWidget(QObject *target, AnimationModes modes);
 
     //*@name accessors
     //@{
@@ -97,5 +96,3 @@ public:
 };
 
 }
-
-#endif

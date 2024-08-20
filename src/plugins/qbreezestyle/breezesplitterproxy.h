@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#ifndef breezesplitterproxy_h
-#define breezesplitterproxy_h
+#pragma once
 
 #include "breeze.h"
 #include "breezeaddeventfilter.h"
@@ -22,18 +21,14 @@ namespace Breeze
 {
 class SplitterProxy;
 
-//* factory
+//* Factory for SplitterProxy widgets
 class SplitterFactory : public QObject
 {
     Q_OBJECT
 
 public:
     //* constructor
-    explicit SplitterFactory(QObject *parent)
-        : QObject(parent)
-        , _enabled(false)
-    {
-    }
+    explicit SplitterFactory();
 
     //* enabled state
     void setEnabled(bool);
@@ -106,5 +101,3 @@ private:
 };
 
 }
-
-#endif

@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#ifndef breezestyle_h
-#define breezestyle_h
+#pragma once
 
 #include "breeze.h"
 #include "breezehelper.h"
@@ -30,6 +29,8 @@
 #include <QWidget>
 
 #include <functional>
+
+class QDialogButtonBox;
 
 namespace BreezePrivate
 {
@@ -90,6 +91,8 @@ public:
     void polish(QPalette &palette) override;
 
     QPalette standardPalette() const override;
+    //* application unpolishing
+    void unpolish(QApplication *) override;
 
     //* polish scrollarea
     void polishScrollArea(QAbstractScrollArea *);
@@ -131,11 +134,13 @@ public:
     //@{
 
     bool eventFilter(QObject *, QEvent *) override;
+    bool eventFilterPageViewHeader(QWidget *, QEvent *);
     bool eventFilterScrollArea(QWidget *, QEvent *);
     bool eventFilterComboBoxContainer(QWidget *, QEvent *);
     bool eventFilterDockWidget(QDockWidget *, QEvent *);
     bool eventFilterMdiSubWindow(QMdiSubWindow *, QEvent *);
     bool eventFilterCommandLinkButton(QCommandLinkButton *, QEvent *);
+    bool eventFilterDialogButtonBox(QDialogButtonBox *, QEvent *);
 
     //* install event filter to object, in a unique way
     void addEventFilter(QObject *object)
@@ -154,10 +159,11 @@ protected Q_SLOTS:
     //* global configuration changed
     void globalConfigurationChanged(int type, int arg);
     void loadGlobalAnimationSettings();
-protected:
+
     //* standard icons
     QIcon standardIconImplementation(StandardPixmap, const QStyleOption *, const QWidget *) const;
 
+protected:
     //* standard icons
     QIcon standardIcon(StandardPixmap pixmap, const QStyleOption *option = nullptr, const QWidget *widget = nullptr) const override
     {
@@ -285,6 +291,8 @@ private:
     bool drawIndicatorToolBarHandlePrimitive(const QStyleOption *, QPainter *, const QWidget *) const;
     bool drawIndicatorToolBarSeparatorPrimitive(const QStyleOption *, QPainter *, const QWidget *) const;
     bool drawIndicatorBranchPrimitive(const QStyleOption *, QPainter *, const QWidget *) const;
+    bool drawDockWidgetResizeHandlePrimitive(const QStyleOption *, QPainter *, const QWidget *) const;
+    bool drawPanelStatusBarPrimitive(const QStyleOption *, QPainter *, const QWidget *) const;
     bool drawWidgetPrimitive(const QStyleOption *, QPainter *, const QWidget *) const;
 
     //@}
@@ -320,6 +328,7 @@ private:
     bool drawToolBoxTabLabelControl(const QStyleOption *, QPainter *, const QWidget *) const;
     bool drawToolBoxTabShapeControl(const QStyleOption *, QPainter *, const QWidget *) const;
     bool drawDockWidgetTitleControl(const QStyleOption *, QPainter *, const QWidget *) const;
+    bool drawSplitterControl(const QStyleOption *, QPainter *, const QWidget *) const;
 
     //*@}
 
@@ -358,7 +367,7 @@ private:
         DoubleButton,
     };
 
-    //* returns height for scrollbar buttons depending of button types
+    //* returns height for scrollbar buttons depending on button types
     int scrollBarButtonHeight(const ScrollBarButtonType &type) const
     {
         switch (type) {
@@ -442,6 +451,10 @@ private:
         return QRect(rect.left() + (rect.width() - width) / 2, rect.top() + (rect.height() - height) / 2, width, height);
     }
 
+    static int sliderTickMarksLength();
+
+    static QRect sliderRectWithoutTickMarks(const QStyleOptionSlider *option);
+
     /*
     Checks whether the point is before the bound rect for bound of given orientation.
     This is needed to implement custom number of buttons in scrollbars,
@@ -478,43 +491,21 @@ private:
     //@}
 
     //* focus frame
-    QPointer<QFocusFrame> _focusFrame = nullptr;
+    QPointer<QFocusFrame> _focusFrame;
 
-    //* helper
-    Helper *_helper = nullptr;
+    std::shared_ptr<Helper> _helper;
 
-    //* shadow helper
-    ShadowHelper *_shadowHelper = nullptr;
-
-    //* animations
-    Animations *_animations = nullptr;
-
-    //* keyboard accelerators
-    Mnemonics *_mnemonics = nullptr;
-
-    //* blur helper
-    BlurHelper *_blurHelper = nullptr;
-
-    //* window manager
-    WindowManager *_windowManager = nullptr;
-
-    //* frame shadows
-    FrameShadowFactory *_frameShadowFactory = nullptr;
-
-    //* mdi window shadows
-    MdiWindowShadowFactory *_mdiWindowShadowFactory = nullptr;
-
-    //* splitter Factory, to extend splitters hit area
-    SplitterFactory *_splitterFactory = nullptr;
-
-    //* signal manager for the tools area
-    ToolsAreaManager *_toolsAreaManager = nullptr;
-
-    //* widget explorer
-    WidgetExplorer *_widgetExplorer = nullptr;
-
-    //* tabbar data
-    BreezePrivate::TabBarData *_tabBarData = nullptr;
+    std::unique_ptr<ShadowHelper> _shadowHelper;
+    std::unique_ptr<Animations> _animations;
+    std::unique_ptr<Mnemonics> _mnemonics;
+    std::unique_ptr<BlurHelper> _blurHelper;
+    std::unique_ptr<WindowManager> _windowManager;
+    std::unique_ptr<FrameShadowFactory> _frameShadowFactory;
+    std::unique_ptr<MdiWindowShadowFactory> _mdiWindowShadowFactory;
+    std::unique_ptr<SplitterFactory> _splitterFactory;
+    std::unique_ptr<ToolsAreaManager> _toolsAreaManager;
+    std::unique_ptr<WidgetExplorer> _widgetExplorer;
+    std::unique_ptr<BreezePrivate::TabBarData> _tabBarData;
 
     //* icon hash
     using IconCache = QHash<StandardPixmap, QIcon>;
@@ -588,5 +579,3 @@ bool Style::hasParent(const QWidget *widget, const char *className) const
     return false;
 }
 }
-
-#endif

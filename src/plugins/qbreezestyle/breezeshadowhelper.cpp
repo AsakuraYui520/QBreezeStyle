@@ -66,10 +66,11 @@ CompositeShadowParams ShadowHelper::lookupShadowParams(int shadowSizeEnum)
 }
 
 //_____________________________________________________
-ShadowHelper::ShadowHelper(QObject *parent, Helper &helper)
-    : QObject(parent)
+ShadowHelper::ShadowHelper(const std::shared_ptr<Helper> &helper)
+    : QObject()
     , _helper(helper)
 {
+    Q_ASSERT(helper);
 }
 
 //_______________________________________________________
@@ -98,7 +99,7 @@ bool ShadowHelper::registerWidget(QWidget *widget, bool force)
         return false;
     }
 
-    // try create shadow directly
+    // try to create shadow directly
     installShadows(widget);
     _widgets.insert(widget);
 
@@ -201,7 +202,7 @@ TileSet ShadowHelper::shadowTiles(QWidget *widget)
     const QSize boxSize =
         BoxShadowRenderer::calculateMinimumBoxSize(params.shadow1.radius).expandedTo(BoxShadowRenderer::calculateMinimumBoxSize(params.shadow2.radius));
 
-    const qreal frameRadius = _helper.frameRadius();
+    const qreal frameRadius = _helper->frameRadius();
 
     BoxShadowRenderer shadowRenderer;
     shadowRenderer.setBorderRadius(frameRadius);
@@ -235,7 +236,7 @@ TileSet ShadowHelper::shadowTiles(QWidget *widget)
     painter.end();
 
     const QPoint innerRectTopLeft = outerRect.center();
-    _shadowTiles = TileSet(QPixmap::fromImage(shadowTexture), innerRectTopLeft.x(), innerRectTopLeft.y(), 1, 1);
+    _shadowTiles = TileSet(QPixmap::fromImage(std::move(shadowTexture)), innerRectTopLeft.x(), innerRectTopLeft.y(), 1, 1);
 
     return _shadowTiles;
 }

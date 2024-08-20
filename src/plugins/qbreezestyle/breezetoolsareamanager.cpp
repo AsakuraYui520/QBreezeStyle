@@ -15,9 +15,8 @@ const char *colorProperty = "KDE_COLOR_SCHEME_PATH";
 
 namespace Breeze
 {
-ToolsAreaManager::ToolsAreaManager(Helper *helper, QObject *parent)
-    : QObject(parent)
-    , _helper(helper)
+ToolsAreaManager::ToolsAreaManager()
+    : QObject()
 {
     if (qApp && qApp->property(colorProperty).isValid()) {
         auto path = qApp->property(colorProperty).toString();
@@ -70,7 +69,7 @@ QRect ToolsAreaManager::toolsAreaRect(const QMainWindow *window)
         }
     }
     if (itemHeight > 0) {
-        itemHeight += window->devicePixelRatio();
+        itemHeight += 1;
     }
 
     return QRect(0, 0, window->width(), itemHeight);
@@ -158,7 +157,7 @@ bool AppListener::eventFilter(QObject *watched, QEvent *event)
             }
 //            manager->_watcher = KConfigWatcher::create(manager->_config);
 //            connect(manager->_watcher.data(), &KConfigWatcher::configChanged, manager, &ToolsAreaManager::configUpdated);
-//            manager->configUpdated();
+            manager->configUpdated();
         }
     }
 
@@ -218,8 +217,8 @@ void ToolsAreaManager::registerWidget(QWidget *widget)
         if (qobject_cast<QMdiArea *>(parent) || qobject_cast<QDockWidget *>(parent)) {
             break;
         }
-        if (qobject_cast<QMainWindow *>(parent)) {
-            mainWindow = qobject_cast<QMainWindow *>(parent);
+        if (auto window = qobject_cast<QMainWindow *>(parent)) {
+            mainWindow = window;
         }
         parent = parent->parentWidget();
     }

@@ -1,6 +1,3 @@
-#ifndef breezeblurhelper_h
-#define breezeblurhelper_h
-
 //////////////////////////////////////////////////////////////////////////////
 // breezeblurhelper.h
 // handle regions passed to kwin for blurring
@@ -14,6 +11,8 @@
 //
 // SPDX-License-Identifier: MIT
 //////////////////////////////////////////////////////////////////////////////
+
+#pragma once
 
 #include "breeze.h"
 #include "breezehelper.h"
@@ -29,7 +28,7 @@ class BlurHelper : public QObject
 
 public:
     //! constructor
-    BlurHelper(QObject *);
+    explicit BlurHelper(const std::shared_ptr<Helper> &helper);
 
     //! register widget
     void registerWidget(QWidget *);
@@ -50,8 +49,9 @@ protected:
 
     //! update blur regions for given widget
     void update(QWidget *) const;
+
+private:
+    std::shared_ptr<Helper> _helper;
 };
 
 }
-
-#endif

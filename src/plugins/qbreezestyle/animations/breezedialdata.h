@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#ifndef breezedial_data_h
-#define breezedial_data_h
+#pragma once
 
 #include "breezewidgetstatedata.h"
 
@@ -18,7 +17,7 @@ class DialData : public WidgetStateData
 
 public:
     //* constructor
-    DialData(QObject *parent, QWidget *target, int);
+    DialData(QObject *parent, QObject *target, int duration);
 
     //* event filter
     bool eventFilter(QObject *, QEvent *) override;
@@ -50,5 +49,3 @@ private:
 };
 
 }
-
-#endif

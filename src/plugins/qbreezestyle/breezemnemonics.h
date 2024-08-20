@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#ifndef breezemnemonics_h
-#define breezemnemonics_h
+#pragma once
 
 #include <QApplication>
 #include <QEvent>
@@ -15,16 +14,14 @@
 
 namespace Breeze
 {
+//* keyboard accelerators
 class Mnemonics : public QObject
 {
     Q_OBJECT
 
 public:
     //* constructor
-    explicit Mnemonics(QObject *parent)
-        : QObject(parent)
-    {
-    }
+    explicit Mnemonics();
 
     //* set mode
     void setMode(int);
@@ -54,5 +51,3 @@ private:
 };
 
 }
-
-#endif

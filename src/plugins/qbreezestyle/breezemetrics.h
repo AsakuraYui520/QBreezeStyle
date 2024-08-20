@@ -5,8 +5,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#ifndef breezemetrics_h
-#define breezemetrics_h
+#pragma once
 
 #include <QtGlobal>
 
@@ -96,7 +95,7 @@ struct Metrics {
     static constexpr int ScrollBar_Extend = 21;
     static constexpr int ScrollBar_SliderWidth = 8;
     static constexpr int ScrollBar_MinSliderHeight = 20;
-    static constexpr int ScrollBar_NoButtonHeight = (ScrollBar_Extend - ScrollBar_SliderWidth) / 2;
+    static constexpr int ScrollBar_NoButtonHeight = 3;
     static constexpr int ScrollBar_SingleButtonHeight = ScrollBar_Extend;
     static constexpr int ScrollBar_DoubleButtonHeight = 2 * ScrollBar_Extend;
 
@@ -108,6 +107,7 @@ struct Metrics {
     static constexpr int ToolBar_ExtensionWidth = 20;
     static constexpr int ToolBar_ItemMargin = 6;
     static constexpr int ToolBar_ItemSpacing = 0;
+    static constexpr int ToolBar_SeparatorVerticalMargin = 2;
 
     // progressbars
     static constexpr int ProgressBar_BusyIndicatorSize = 14;
@@ -131,9 +131,10 @@ struct Metrics {
     static constexpr int TabBar_TabItemSpacing = 8;
     static constexpr int TabBar_TabOverlap = 1;
     static constexpr int TabBar_BaseOverlap = 2;
+    static constexpr int TabBar_ActiveEffectSize = 3;
 
     // tab widget
-    static constexpr int TabWidget_MarginWidth = 4;
+    static constexpr int TabWidget_MarginWidth = 3;
 
     // toolbox
     static constexpr int ToolBox_TabMinWidth = 80;
@@ -158,6 +159,10 @@ struct Metrics {
 
     // shadow dimensions
     static constexpr int Shadow_Overlap = 2;
+
+    // frame intensities (called bias in KColorUtilities::Mix)
+    // Keep this value in sync with Kirigami  PlatformTheme::frameContrast()
+    // https://invent.kde.org/frameworks/kirigami/-/blob/master/src/platform/platformtheme.cpp?ref_type=heads#L701
+    static constexpr qreal Bias_Default = 0.20;
 };
 }
-#endif

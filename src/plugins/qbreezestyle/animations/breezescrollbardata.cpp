@@ -15,7 +15,7 @@ Q_GUI_EXPORT QStyleOptionSlider qt_qscrollbarStyleOption(QScrollBar *);
 namespace Breeze
 {
 //______________________________________________
-ScrollBarData::ScrollBarData(QObject *parent, QWidget *target, int duration)
+ScrollBarData::ScrollBarData(QObject *parent, QObject *target, int duration)
     : WidgetStateData(parent, target, duration)
     , _position(-1, -1)
 {
@@ -123,14 +123,25 @@ void ScrollBarData::hoverMoveEvent(QObject *object, QEvent *event)
 
     // cast event
     QHoverEvent *hoverEvent = static_cast<QHoverEvent *>(event);
-    QStyle::SubControl hoverControl = scrollBar->style()->hitTestComplexControl(QStyle::CC_ScrollBar, &opt, hoverEvent->pos(), scrollBar);
+
+    QStyle::SubControl hoverControl =
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        scrollBar->style()->hitTestComplexControl(QStyle::CC_ScrollBar, &opt, hoverEvent->position().toPoint(), scrollBar);
+#else
+        scrollBar->style()->hitTestComplexControl(QStyle::CC_ScrollBar, &opt, hoverEvent->pos(), scrollBar);
+#endif
 
     // update hover state
     updateAddLineArrow(hoverControl);
     updateSubLineArrow(hoverControl);
 
     // store position
-    _position = hoverEvent->pos();
+    _position =
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        hoverEvent->position().toPoint();
+#else
+        hoverEvent->pos();
+#endif
 }
 
 //______________________________________________

@@ -22,6 +22,9 @@
 
 #include <QPointer>
 
+namespace Breeze
+{
+
 class /*KWINDOWSYSTEM_EXPORT*/ KWindowShadowTilePrivate
 {
 public:
@@ -58,5 +61,7 @@ public:
     QMargins padding;
     bool isCreated = false;
 };
+
+}
 
 #endif // KWINDOWSHADOW_P_H

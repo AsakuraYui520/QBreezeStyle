@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#ifndef breezeframeshadow_h
-#define breezeframeshadow_h
+#pragma once
 
 #include "breeze.h"
 #include "breezeaddeventfilter.h"
@@ -15,7 +14,7 @@
 #include <QObject>
 #include <QSet>
 
-//#include <KColorScheme>
+#include <KColorScheme>
 #include <QPaintEvent>
 #include <QWidget>
 
@@ -28,13 +27,10 @@ class FrameShadowFactory : public QObject
 
 public:
     //* constructor
-    explicit FrameShadowFactory(QObject *parent)
-        : QObject(parent)
-    {
-    }
+    explicit FrameShadowFactory();
 
     //* register widget
-    bool registerWidget(QWidget *, Helper &);
+    bool registerWidget(QWidget *, const std::shared_ptr<Helper> &helper);
 
     //* unregister
     void unregisterWidget(QWidget *);
@@ -56,7 +52,7 @@ public:
 
 protected:
     //* install shadows on given widget
-    void installShadows(QWidget *, Helper &);
+    void installShadows(QWidget *, const std::shared_ptr<Helper> &helper);
 
     //* remove shadows from widget
     void removeShadows(QWidget *);
@@ -68,7 +64,7 @@ protected:
     void update(QObject *) const;
 
     //* install shadow on given side
-    void installShadow(QWidget *, Helper &, Side) const;
+    void installShadow(QWidget *, const std::shared_ptr<Helper> &helper, Side area) const;
 
 protected Q_SLOTS:
 
@@ -91,7 +87,7 @@ class FrameShadow : public QWidget
 
 public:
     //* constructor
-    FrameShadow(Side, Helper &);
+    FrameShadow(Side, const std::shared_ptr<Helper> &helper);
 
     //* update geometry
     virtual void updateGeometry(QRect);
@@ -108,7 +104,7 @@ protected:
 
 private:
     //* helper
-    Helper &_helper;
+    std::shared_ptr<Helper> _helper;
 
     //* shadow area
     Side _area;
@@ -126,5 +122,3 @@ private:
     //@}
 };
 }
-
-#endif

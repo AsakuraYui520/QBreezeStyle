@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#ifndef breezeanimation_h
-#define breezeanimation_h
+#pragma once
 
 #include "breeze.h"
 
@@ -30,7 +29,7 @@ public:
     }
 
     //* true if running
-    bool isRunning() const
+    [[nodiscard]] bool isRunning() const
     {
         return state() == Animation::Running;
     }
@@ -46,5 +45,3 @@ public:
 };
 
 }
-
-#endif

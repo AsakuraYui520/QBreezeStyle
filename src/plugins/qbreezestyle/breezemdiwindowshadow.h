@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#ifndef breezemdiwindowshadow_h
-#define breezemdiwindowshadow_h
+#pragma once
 
 #include <QEvent>
 #include <QObject>
@@ -29,7 +28,7 @@ class MdiWindowShadow : public QWidget
 
 public:
     //* constructor
-    explicit MdiWindowShadow(QWidget *, const TileSet &);
+    explicit MdiWindowShadow(QWidget *parent, const TileSet &shadowTiles);
 
     //* update geometry
     void updateGeometry();
@@ -71,7 +70,7 @@ class MdiWindowShadowFactory : public QObject
 
 public:
     //* constructor
-    explicit MdiWindowShadowFactory(QObject *);
+    explicit MdiWindowShadowFactory();
 
     //* set shadow helper
     void setShadowHelper(ShadowHelper *shadowHelper)
@@ -149,10 +148,7 @@ private:
     QSet<const QObject *> _registeredWidgets;
 
     //* shadow helper used to generate the shadows
-    //QPointer<ShadowHelper> _shadowHelper;
-    ShadowHelper* _shadowHelper = nullptr;
+    QPointer<ShadowHelper> _shadowHelper;
 };
 
 }
-
-#endif

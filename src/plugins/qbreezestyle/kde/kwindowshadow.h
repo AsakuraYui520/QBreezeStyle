@@ -14,6 +14,9 @@
 #include <QSharedPointer>
 #include <QWindow>
 
+namespace Breeze
+{
+    
 class KWindowShadowPrivate;
 class KWindowShadowTilePrivate;
 
@@ -221,5 +224,7 @@ public:
 private:
     QScopedPointer<KWindowShadowPrivate> d;
 };
+
+}
 
 #endif // KWINDOWSHADOW_H

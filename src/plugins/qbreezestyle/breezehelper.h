@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#ifndef breeze_helper_h
-#define breeze_helper_h
+#pragma once
 
 #include "breeze.h"
 #include "breezeanimationdata.h"
@@ -21,9 +20,14 @@
 #include <QPainterPath>
 #include <QToolBar>
 #include <QWidget>
+#include <qpainter.h>
+
+class QSlider;
+class QStyleOptionSlider;
 
 namespace Breeze
 {
+class PaletteChangedEventFilter;
 //* breeze style helper class.
 /** contains utility functions used at multiple places in both breeze style and breeze window decoration */
 class Helper : public QObject
@@ -32,7 +36,7 @@ class Helper : public QObject
 
 public:
     //* constructor
-    explicit Helper(KSharedConfig::Ptr, QObject *parent = nullptr);
+    explicit Helper(KSharedConfig::Ptr);
 
     //* destructor
     virtual ~Helper()
@@ -47,6 +51,12 @@ public:
 
     //* pointer to kdecoration config
 //    QSharedPointer<InternalSettings> decorationConfig() const;
+
+    //* install event filter for palette change event
+    void installEventFilter(QApplication *app) const;
+
+    //* uninstall event filter
+    void removeEventFilter(QApplication *app) const;
 
     //*@name color utilities
     //@{
@@ -91,7 +101,7 @@ public:
     }
 
     //* shadow
-    QColor shadowColor(const QPalette &palette, qreal opacity = 0.125) const
+    QColor shadowColor([[maybe_unused]] const QPalette &palette, qreal opacity = 0.125) const
     {
         return QColor::fromRgbF(0, 0, 0, opacity);
     }
@@ -175,49 +185,56 @@ public:
     //@{
 
     //* debug frame
-    void renderDebugFrame(QPainter *, const QRect &) const;
+    void renderDebugFrame(QPainter *, const QRectF &) const;
 
     //* focus rect
-    void renderFocusRect(QPainter *, const QRect &, const QColor &, const QColor &outline = QColor(), Sides = {}) const;
+    void renderFocusRect(QPainter *, const QRectF &, const QColor &, const QColor &outline = QColor(), Sides = {}) const;
 
     //* focus line
-    void renderFocusLine(QPainter *, const QRect &, const QColor &) const;
+    void renderFocusLine(QPainter *, const QRectF &, const QColor &) const;
 
     //* generic frame
-    void renderFrame(QPainter *, const QRect &, const QColor &color, const QColor &outline = QColor()) const;
+    void renderFrame(QPainter *, const QRectF &, const QColor &color, const QColor &outline = QColor()) const;
 
     //* generic frame, with separators only on the side
-    void renderFrameWithSides(QPainter *, const QRect &, const QColor &color, Qt::Edges edges, const QColor &outline = QColor()) const;
+    void renderFrameWithSides(QPainter *, const QRectF &, const QColor &color, Qt::Edges edges, const QColor &outline = QColor()) const;
 
     //* side panel frame
-    void renderSidePanelFrame(QPainter *, const QRect &, const QColor &outline, Side) const;
+    void renderSidePanelFrame(QPainter *, const QRectF &, const QColor &outline, Side) const;
 
     //* menu frame
-    void renderMenuFrame(QPainter *, const QRect &, const QColor &color, const QColor &outline, bool roundCorners = true, bool isTopMenu = false) const;
+    void renderMenuFrame(QPainter *,
+                         const QRectF &,
+                         const QColor &color,
+                         const QColor &outline,
+                         bool roundCorners = true,
+                         Qt::Edges seamlessEdges = Qt::Edges()) const;
+
+    QRegion menuFrameRegion(const QMenu *widget);
 
     //* button frame
     void renderButtonFrame(QPainter *painter,
-                           const QRect &rect,
+                           const QRectF &rect,
                            const QPalette &palette,
                            const QHash<QByteArray, bool> &stateProperties,
                            qreal bgAnimation = AnimationData::OpacityInvalid,
                            qreal penAnimation = AnimationData::OpacityInvalid) const;
 
     //* toolbutton frame
-    void renderToolBoxFrame(QPainter *, const QRect &, int tabWidth, const QColor &color) const;
+    void renderToolBoxFrame(QPainter *, const QRectF &, int tabWidth, const QColor &color) const;
 
     //* tab widget frame
-    void renderTabWidgetFrame(QPainter *, const QRect &, const QColor &color, const QColor &outline, Corners) const;
+    void renderTabWidgetFrame(QPainter *, const QRectF &, const QColor &color, const QColor &outline, Corners) const;
 
     //* selection frame
-    void renderSelection(QPainter *, const QRect &, const QColor &) const;
+    void renderSelection(QPainter *, const QRectF &, const QColor &) const;
 
     //* separator
-    void renderSeparator(QPainter *, const QRect &, const QColor &, bool vertical = false) const;
+    void renderSeparator(QPainter *, const QRectF &, const QColor &, bool vertical = false) const;
 
     //* checkbox
     void renderCheckBoxBackground(QPainter *,
-                                  const QRect &,
+                                  const QRectF &,
                                   const QPalette &palette,
                                   CheckBoxState state,
                                   bool neutalHighlight,
@@ -226,7 +243,7 @@ public:
 
     //* checkbox
     void renderCheckBox(QPainter *,
-                        const QRect &,
+                        const QRectF &,
                         const QPalette &palette,
                         bool mouseOver,
                         CheckBoxState state,
@@ -238,7 +255,7 @@ public:
 
     //* radio button
     void renderRadioButtonBackground(QPainter *,
-                                     const QRect &,
+                                     const QRectF &,
                                      const QPalette &palette,
                                      RadioButtonState state,
                                      bool neutalHighlight,
@@ -247,7 +264,7 @@ public:
 
     //* radio button
     void renderRadioButton(QPainter *,
-                           const QRect &,
+                           const QRectF &,
                            const QPalette &palette,
                            bool mouseOver,
                            RadioButtonState state,
@@ -257,20 +274,26 @@ public:
                            qreal hoverAnimation = AnimationData::OpacityInvalid) const;
 
     //* slider groove
-    void renderSliderGroove(QPainter *, const QRect &, const QColor &) const;
+    void renderSliderGroove(QPainter *, const QRectF &, const QColor &fg, const QColor &bg) const;
+
+    //* reimplementation of protected method
+    void initSliderStyleOption(const QSlider *, QStyleOptionSlider *) const;
+
+    //* slider focus frame
+    QRectF pathForSliderHandleFocusFrame(QPainterPath &, const QRectF &, int hmargin, int vmargin) const;
 
     //* slider handle
-    void renderSliderHandle(QPainter *, const QRect &, const QColor &, const QColor &outline, const QColor &shadow, bool sunken) const;
+    void renderSliderHandle(QPainter *, const QRectF &, const QColor &, const QColor &outline, const QColor &shadow, bool sunken) const;
 
     //* dial groove
-    void renderDialGroove(QPainter *, const QRect &, const QColor &fg, const QColor &bg, qreal first, qreal last) const;
+    void renderDialGroove(QPainter *, const QRectF &, const QColor &fg, const QColor &bg, qreal first, qreal last) const;
 
     //* progress bar groove
-    void renderProgressBarGroove(QPainter *, const QRect &, const QColor &fg, const QColor &bg) const;
+    void renderProgressBarGroove(QPainter *, const QRectF &, const QColor &fg, const QColor &bg) const;
 
     //* progress bar contents (animated)
     void renderProgressBarBusyContents(QPainter *painter,
-                                       const QRect &rect,
+                                       const QRectF &rect,
                                        const QColor &first,
                                        const QColor &second,
                                        bool horizontal,
@@ -281,23 +304,24 @@ public:
     void renderScrollBarGroove(QPainter *painter, const QRect &rect, const QColor &color) const;
 
     //* scrollbar handle
-    void renderScrollBarHandle(QPainter *, const QRect &, const QColor &fg, const QColor &bg) const;
+    void renderScrollBarHandle(QPainter *, const QRectF &, const QColor &fg, const QColor &bg) const;
 
     //* separator between scrollbar and contents
-    void renderScrollBarBorder(QPainter *, const QRect &, const QColor &) const;
+    void renderScrollBarBorder(QPainter *, const QRectF &, const QColor &) const;
 
     //* tabbar tab
-    void
-    renderTabBarTab(QPainter *, const QRect &, const QPalette &palette, const QHash<QByteArray, bool> &stateProperties, Corners corners, qreal animation) const;
+    void renderTabBarTab(QPainter *, const QRectF &, const QPalette &palette, const QHash<QByteArray, bool> &stateProperties, Corners corners, qreal animation)
+        const;
     // TODO(janet): document should be set based on whether or not we consider the
     // tab user-editable, but Qt apps often misuse or don't use documentMode property
     // so we're currently just always setting it to true for now
+    qreal devicePixelRatio(QPainter *) const;
 
     //* generic arrow
-    void renderArrow(QPainter *, const QRect &, const QColor &, ArrowOrientation) const;
+    void renderArrow(QPainter *, const QRectF &, const QColor &, ArrowOrientation) const;
 
     //* generic button (for mdi decorations, tabs and dock widgets)
-    void renderDecorationButton(QPainter *, const QRect &, const QColor &, ButtonType, bool inverted) const;
+    void renderDecorationButton(QPainter *, const QRectF &, const QColor &, ButtonType, bool inverted) const;
 
     //* generic shadow for rounded rectangles
     void renderRoundedRectShadow(QPainter *, const QRectF &, const QColor &, qreal radius = Metrics::Frame_FrameRadius - PenWidth::Shadow / 2) const;
@@ -348,7 +372,14 @@ public:
         return rect.adjusted(shadowSize, shadowSize, -shadowSize, -shadowSize);
     }
 
-    QPixmap coloredIcon(const QIcon &icon, const QPalette &palette, const QSize &size, QIcon::Mode mode = QIcon::Normal, QIcon::State state = QIcon::Off);
+    QPixmap coloredIcon(const QIcon &icon,
+                        const QPalette &palette,
+                        const QSize &size,
+                        qreal devicePixelRatio,
+                        QIcon::Mode mode = QIcon::Normal,
+                        QIcon::State state = QIcon::Off);
+
+    static Qt::Edges menuSeamlessEdges(const QWidget *);
 
 protected:
     //* return rounded path in a given rect, with only selected corners rounded, and for a given radius
@@ -362,7 +393,10 @@ private:
 //    KSharedConfig::Ptr _kwinConfig;
 
     //* decoration configuration
- //   QSharedPointer<InternalSettings> _decorationConfig;
+//    QSharedPointer<InternalSettings> _decorationConfig;
+
+    //* event filter
+    PaletteChangedEventFilter *_eventFilter;
 
     //*@name brushes
     //@{
@@ -385,8 +419,21 @@ private:
     mutable bool _cachedAutoValid = false;
 
     friend class ToolsAreaManager;
+    friend class PaletteChangedEventFilter;
 };
 
-}
+class PaletteChangedEventFilter : public QObject
+{
+    Q_OBJECT
 
-#endif
+public:
+    explicit PaletteChangedEventFilter(Helper *);
+
+protected:
+    bool eventFilter(QObject *watched, QEvent *event) override;
+
+private:
+    // lifetime: helper IS the parent QObject. When it is destructed, so is the filter.
+    Helper *_helper = nullptr;
+};
+}
