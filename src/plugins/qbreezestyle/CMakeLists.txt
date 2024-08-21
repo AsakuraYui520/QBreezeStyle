@@ -5,6 +5,7 @@ qt_internal_add_plugin(QBreezeStylePlugin
     OUTPUT_NAME qbreezestyle
     PLUGIN_TYPE styles
     SOURCES
+        breeze.qrc
         animations/breezeanimation.h 
         animations/breezeanimationdata.h 
         animations/breezeanimations.h 
@@ -107,7 +108,6 @@ qt_internal_add_plugin(QBreezeStylePlugin
         kde/kcolorutils.cpp 
         kde/kstatefulbrush.cpp 
         kde/kwindowshadow.cpp
-        breeze.qrc
     INCLUDE_DIRECTORIES
         animations
         kde
@@ -117,10 +117,9 @@ qt_internal_add_plugin(QBreezeStylePlugin
         Qt::WidgetsPrivate
 )
 
-set_target_properties(QBreezeStylePlugin
-    PROPERTIES
-        DISABLE_PRECOMPILE_HEADERS ON
+qt_internal_extend_target(QBreezeStylePlugin
+    DEFINES
+        QT_BUILD_BREEZE_LIB
+        _USE_MATH_DEFINES
 )
-
-add_definitions(-D_USE_MATH_DEFINES -DQT_BUILD_BREEZE_LIB -DQT_NO_DBUS)
 
