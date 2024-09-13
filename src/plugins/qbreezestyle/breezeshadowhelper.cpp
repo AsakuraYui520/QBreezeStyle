@@ -160,8 +160,8 @@ bool ShadowHelper::eventFilter(QObject *object, QEvent *event)
             return false;
         }
 
-        QWidget *widget(static_cast<QWidget *>(object));
-        QPlatformSurfaceEvent *surfaceEvent(static_cast<QPlatformSurfaceEvent *>(event));
+        QWidget *widget(dynamic_cast<QWidget *>(object));
+        QPlatformSurfaceEvent *surfaceEvent(dynamic_cast<QPlatformSurfaceEvent *>(event));
 
         switch (surfaceEvent->surfaceEventType()) {
         case QPlatformSurfaceEvent::SurfaceCreated:
@@ -182,7 +182,7 @@ TileSet ShadowHelper::shadowTiles(QWidget *widget)
     CompositeShadowParams params = lookupShadowParams(StyleConfigData::shadowSize());
 
     if (params.isNone()) {
-        return TileSet();
+        return {};
     } else if (_shadowTiles.isValid()) {
         return _shadowTiles;
     }
@@ -244,14 +244,16 @@ TileSet ShadowHelper::shadowTiles(QWidget *widget)
 //_______________________________________________________
 void ShadowHelper::widgetDeleted(QObject *object)
 {
-    QWidget *widget(static_cast<QWidget *>(object));
+    QWidget *widget(dynamic_cast<QWidget *>(object));
     _widgets.remove(widget);
+
+    _shadows.remove(widget->windowHandle());
 }
 
 //_______________________________________________________
 void ShadowHelper::windowDeleted(QObject *object)
 {
-    QWindow *window(static_cast<QWindow *>(object));
+    QWindow *window(dynamic_cast<QWindow *>(object));
     _shadows.remove(window);
 }
 
@@ -406,7 +408,7 @@ QMargins ShadowHelper::shadowMargins(QWidget *widget) const
 {
     CompositeShadowParams params = lookupShadowParams(StyleConfigData::shadowSize());
     if (params.isNone()) {
-        return QMargins();
+        return {};
     }
     qreal dpr = devicePixelRatio(widget);
     params *= dpr;
